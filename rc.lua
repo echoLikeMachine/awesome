@@ -561,3 +561,22 @@ end)
 client.connect_signal("mouse::enter", function(c)
     c:activate { context = "mouse_enter", raise = false }
 end)
+
+client.connect_signal("property::fullscreen", function(c)
+    if c.class == 'firefox' then
+        local awful = require("awful")
+        local beautiful = require("beautiful")
+        local tb_height = awful.titlebar(c).height --Custom Titlebar height
+                or math.floor(tonumber(beautiful.get_font_height(beautiful.get().font)*1.5)) --Default Titlebar height
+                or 45 --Failsafe
+        if c.fullscreen then
+            awful.titlebar.hide(c)
+            c.height = c.height + tb_height
+        else
+            awful.titlebar.show(c)
+            c.height = c.height - tb_height
+        end
+    end
+end)
+
+
