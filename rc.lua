@@ -38,7 +38,7 @@ end)
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
+terminal = "st"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -167,12 +167,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     -- Create the wibox
     s.mywibox = awful.wibar {
-        position = "top",
+        position = "bottom",
         screen   = s,
-        width    = 1300,
-        height   = 30,
+        width    = 1280,
+        height   = 28,
         margins  = {
-          top    = 5,
+          bottom = 2,
         },
         widget   = {
             layout = wibox.layout.align.horizontal,
@@ -180,14 +180,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 layout = wibox.layout.fixed.horizontal,
                 mylauncher,
                 s.mytaglist,
-                s.mypromptbox,
+                s.mylayoutbox,
             },
             s.mytasklist, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
                 wibox.widget.systray(),
                 mytextclock,
-                s.mylayoutbox,
             },
         }
     }
@@ -519,10 +518,8 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.floatingbutton (c),
+            awful.titlebar.widget.minimizebutton(c),
             awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
             awful.titlebar.widget.closebutton    (c),
             layout = wibox.layout.fixed.horizontal()
         },
@@ -556,7 +553,7 @@ client.connect_signal("mouse::enter", function(c)
 end)
 
 client.connect_signal("property::fullscreen", function(c)
-    if c.class == 'firefox' then
+    if c.class == 'Firefox' then
         local awful = require("awful")
         local beautiful = require("beautiful")
         local tb_height = awful.titlebar(c).height --Custom Titlebar height
